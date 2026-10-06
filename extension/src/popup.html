@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="ui.css">
+</head>
+<body class="popup">
+  <header><b>Shizuku 收录</b><a href="options.html" target="_blank">设置</a></header>
+  <div id="warn"></div>
+  <section id="here"></section>
+  <section>
+    <div class="row"><button id="exp">导出原始页面</button><button id="syncRaw">同步到电脑给 Claude</button><span id="expInfo" class="dim"></span></div>
+    <div class="row" id="qRow"><button id="qClear">清空队列</button><button id="qResume">全部恢复</button><span id="qInfo" class="dim"></span></div>
+    <div class="row"><button id="rep">用新规则重新处理已收录的</button><span id="repInfo" class="dim">不用再逛网站，要用额度</span></div>
+    <div class="row" id="lostRow" style="display:none"><button id="lost" class="ac"></button><span class="dim">按 N 打开过、但既没收录也不在队列里的</span></div>
+    <div class="h">最近 <span id="sum" class="dim"></span></div>
+    <div id="jobs"></div>
+  </section>
+  <script src="popup.js"></script>
+</body>
+</html>

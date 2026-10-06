@@ -1,0 +1,12 @@
+.shz-chip{display:inline-block;margin-left:6px;padding:0 6px;border-radius:9px;font:600 11px/18px system-ui,sans-serif;vertical-align:middle;white-space:nowrap;border:1px solid transparent;}
+.shz-chip.own{background:#e5f5ea;color:#1f7a43;border-color:#9fd5b2;}
+.shz-chip.none{background:#f2f2f2;color:#777;}
+.shz-chip.warn,.shz-chip.error{background:#fdecea;color:#b3261e;}
+.shz-chip.queued,.shz-chip.processing{background:#fff4dd;color:#8a5a00;}
+.shz-chip.done{background:#e8f0fb;color:#24518f;}
+.shz-bar{position:fixed;z-index:2147483646;right:16px;bottom:16px;display:flex;align-items:center;gap:4px;max-width:calc(100vw - 32px);flex-wrap:wrap;
+  padding:8px 10px;border-radius:10px;background:#1c1c1f;color:#eee;font:13px system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.35);}
+.shz-bar.shz-top{top:16px;bottom:auto;left:50%;right:auto;transform:translateX(-50%);background:#24518f;}
+.shz-bar.shz-top button{border-color:#fff;background:transparent;}
+.shz-bar b{margin-right:4px;color:#d6d1c6;}
+.shz-bar button{margin-left:6px;padding:3px 10px;border-radius:6px;border:1px solid #d6d1c6;background:#2a2a2e;color:#eee;cursor:pointer;font:600 12px system-ui,sans-serif;}

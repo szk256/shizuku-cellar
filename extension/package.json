@@ -1,0 +1,15 @@
+{
+  "name": "shizuku-cellar-extension",
+  "version": "1.0.0",
+  "description": "Shizuku Cellar 的 Chrome 扩展",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "esbuild": "^0.28.2"
+  },
+  "private": true
+}

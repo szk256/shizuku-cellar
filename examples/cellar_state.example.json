@@ -1,0 +1,32 @@
+{
+  "t": "2026-01-01T00:00:00.000Z",
+  "d": {
+    "db": [
+      {"brand": "Example Leaf", "name": "Lemon Drop", "sub": "柠檬糖", "axes": ["lemon", "candy-general"], "sid": 1, "note": "示例数据：清爽偏甜", "line": "Classic", "power": 1},
+      {"brand": "Example Leaf", "name": "Lemon Drop", "sub": "柠檬糖", "axes": ["lemon", "candy-general"], "sid": 2, "note": "同名不同浓度的示例", "line": "Strong", "power": 3},
+      {"brand": "Example Leaf", "name": "Green Hill", "sub": "绿茶", "axes": ["tea-green"], "sid": 3, "note": "", "line": "Classic", "power": 1},
+      {"brand": "Example Leaf", "name": "Night Berry", "sub": "混合莓果", "axes": ["mixed-berry"], "sid": 4, "note": "", "line": "Classic"},
+      {"brand": "Sample & Co", "name": "Mango Lassi", "sub": "芒果酸奶", "axes": ["mango", "yogurt"], "sid": 5, "note": "", "line": "Dessert", "power": 1},
+      {"brand": "Sample & Co", "name": "Cinnamon Roll", "sub": "肉桂卷", "axes": ["cinnamon", "pastry"], "sid": 6, "note": "", "line": "Dessert"},
+      {"brand": "Sample & Co", "name": "Cola Ice", "sub": "冰可乐", "axes": ["cola"], "sid": 7, "note": "", "line": "Drinks", "power": 3},
+      {"brand": "Placeholder Tobacco", "name": "Pistachio", "sub": "开心果", "axes": ["pistachio"], "sid": 8, "note": "", "line": "Nuts", "noRoll": true}
+    ],
+    "logs": {"max": 8, "list": []},
+    "prefs": {"theme": ""},
+    "brands": {},
+    "ignore": {},
+    "layout": {
+      "v": 3,
+      "on": true,
+      "cabs": [
+        {"id": "A", "name": "A 柜", "levels": [
+          {"cap": 12, "zones": ["br:Example Leaf"]},
+          {"cap": 12, "zones": ["br:Sample & Co"]},
+          {"cap": 12, "zones": []}
+        ]}
+      ],
+      "brands": ["Example Leaf", "Sample & Co", "Placeholder Tobacco"],
+      "merges": []
+    }
+  }
+}

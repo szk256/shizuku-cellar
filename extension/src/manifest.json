@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Shizuku 收录",
+  "version": "0.2.0",
+  "description": "在 HTReviews 上收录你正在看的烟料页，用 Claude 翻译、总结评论，并校对你的 Shizuku Cellar 库存。",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://htreviews.org/*",
+    "https://api.anthropic.com/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Shizuku 收录"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://htreviews.org/*"
+      ],
+      "js": [
+        "match.js",
+        "content-htr.js"
+      ],
+      "css": [
+        "content-htr.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "file:///*/Cellar.html",
+        "file:///*shizuku_cellar*"
+      ],
+      "js": [
+        "content-cellar.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

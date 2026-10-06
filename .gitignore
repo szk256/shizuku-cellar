@@ -1,0 +1,10 @@
+Cellar.html
+data/*
+!data/.gitkeep
+bridge/token.txt
+extension/dist/
+extension/node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

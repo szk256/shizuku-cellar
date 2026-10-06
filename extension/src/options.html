@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Shizuku 收录 · 设置</title>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body class="opts">
+  <h1>Shizuku 收录 · 设置</h1>
+
+  <label>用什么处理</label>
+  <label class="chk"><input type="radio" name="backend" value="bridge"> <b>我的 Claude 订阅</b>（本地中转，不用充值；用的是订阅额度，Pro 一次收录太多会碰到上限）</label>
+  <label class="chk"><input type="radio" name="backend" value="api"> <b>API Key</b>（按量付费，要在 console.anthropic.com 充值）</label>
+
+  <div id="bridgeBox">
+    <label>中转口令</label>
+    <input id="bridgeToken" type="password" autocomplete="off" placeholder="启动中转时窗口里显示的那串">
+    <p class="dim">先双击 <code>shizuku\bridge\启动中转.bat</code>，窗口开着别关。第一次用前还要双击 <code>登录 Claude.bat</code> 登录一次。</p>
+    <label>中转地址</label>
+    <input id="bridgeUrl" type="text" autocomplete="off">
+  </div>
+
+  <div id="apiBox">
+    <label>Anthropic API Key</label>
+    <input id="apiKey" type="password" autocomplete="off" placeholder="sk-ant-…">
+    <p class="dim">在 <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a> 创建。只存在这台电脑的扩展存储里，只发给 api.anthropic.com。建议单独建一把 Key，并在控制台设好每月花费上限。</p>
+  </div>
+
+  <label>模型</label>
+  <select id="model">
+    <option value="claude-opus-5-5">Claude Opus 5.5（推荐：准确）</option>
+    <option value="claude-sonnet-5-5">Claude Sonnet 5.5（更省额度 / 便宜一半，质量稍低）</option>
+    <option value="claude-fable-5-1">Claude Fable 5.1（最强，最耗额度）</option>
+  </select>
+
+  <label>思考深度</label>
+  <select id="effort">
+    <option value="medium">medium（推荐）</option>
+    <option value="high">high（评论多、分歧大的页面用）</option>
+    <option value="xhigh">xhigh（最仔细，更慢更耗）</option>
+  </select>
+
+  <label class="chk"><input id="auto" type="checkbox"> 打开烟料页时自动收录（同一页只处理一次，要重做点「重新收录」）</label>
+
+  <label>按 N（下一款）</label>
+  <label class="chk"><input id="nextNewTab" type="checkbox"> 在后台新标签页打开（不离开当前页）</label>
+  <div class="row">一次开 <select id="nextCount" style="width:auto">
+    <option value="1">1</option><option value="2">2</option><option value="3">3（推荐）</option><option value="4">4</option><option value="5">5</option>
+  </select> 款</div>
+  <p class="dim">Claude 是一款一款排队处理的（每款约半分钟到一分钟），开再多也不会更快，只是排队更长；一下子开太多页对网站也不礼貌。所以最多 5。</p>
+  <label class="chk"><input id="autoClose" type="checkbox"> 收录完自动关掉按 N 开出来的标签页（要靠搜索的那几款会留着等你点）</label>
+
+  <div class="row"><button id="save" class="ac">保存</button><button id="test">测试连接</button><span id="msg"></span></div>
+
+  <h2>第一次使用</h2>
+  <ol>
+    <li>在 <code>chrome://extensions</code> 里找到本扩展 → 详细信息 → 打开<b>「允许访问文件网址」</b>（Cellar 是本地文件，不开这个扩展进不去）。</li>
+    <li>用订阅：双击 <code>登录 Claude.bat</code>，输入 <code>/login</code> 登录 Pro 账号（只做一次）；再双击 <code>启动中转.bat</code>，把显示的口令填到上面。</li>
+    <li>打开你的 Cellar（<code>shizuku_cellar_v7.13…html</code>），它会把库存名单同步给扩展。</li>
+    <li>去 htreviews.org 正常浏览。右下角会显示「你有 / 库存里没有」；打开烟料页会自动交给 Claude 处理。</li>
+    <li>回到 Cellar 的 HTReviews 页，处理好的结果在「待确认」里，确认后挂到对应的料上。</li>
+  </ol>
+  <script src="options.js"></script>
+</body>
+</html>
