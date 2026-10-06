@@ -1948,7 +1948,7 @@ function logStats(){
   });
   _ls={n:logs.length,one:one,pair:pair}; return _ls;
 }
-function keyOf(r){ return r.brand+'\u0000'+r.name; }
+function keyOf(r){ return 's'+r.sid; }   // 按编号认款：同名不同浓度是两款不同的料
 function recBySid(id){ return db.find(function(r){ return r.sid===id; }); }
 function useCount(r){ return r&&r.sid?(logStats().one[r.sid]||0):0; }
 /* 常配用提升度 lift，不用原始次数。
@@ -2164,8 +2164,8 @@ function gotoPage(p){
   updateEdFab();
   layoutBars();
 }
-function jumpToEditor(brand,name){
-  var idx=db.findIndex(function(r){ return r.brand===brand && r.name===name; });
+function jumpToEditor(brand,name,sid){
+  var idx=db.findIndex(function(r){ return sid!=null?r.sid===sid:(r.brand===brand && r.name===name); });
   if(idx===-1){ toast('未找到该烟料'); return; }
   gotoPage('editor');
   curEdTab='sku';
@@ -2758,7 +2758,7 @@ function renderIndexFromGroups(groups,order){
     section.appendChild(hdr);
     var cards=document.createElement('div'); cards.className='cards';
     g.items.forEach(function(r){
-      var key=r.brand+'\u0000'+r.name;
+      var key=keyOf(r);
       var card=document.createElement('div');
       card.className='card'+(picklist.some(function(p){return p.key===key;})?' selected':'');
       card.dataset.key=key; card.dataset.brand=r.brand.toLowerCase(); card.dataset.name=r.name.toLowerCase();
@@ -2795,7 +2795,7 @@ function renderIndexFromGroups(groups,order){
       });
       card.querySelector('.card-edit').addEventListener('click',function(ev){
         ev.stopPropagation();
-        jumpToEditor(r.brand,r.name);
+        jumpToEditor(r.brand,r.name,r.sid);
       });
       cards.appendChild(card);
     });
@@ -3759,7 +3759,7 @@ function srRender(){
   container.innerHTML='';
   if(!matches.length){ container.innerHTML='<div class="sr-empty">无匹配结果</div>'; return; }
   matches.slice(0,40).forEach(function(r){
-    var key=r.brand+'\u0000'+r.name;
+    var key=keyOf(r);
     var isSel=picklist.some(function(p){return p.key===key;});
     var col=axColor((r.axes||['other'])[0]);
     var item=document.createElement('div'); item.className='sr-item';
@@ -3916,7 +3916,7 @@ function plSave(){ try{ localStorage.setItem('shizuku_pick',JSON.stringify({p:pi
 function plRestore(){
   try{
     var o=JSON.parse(localStorage.getItem('shizuku_pick')||'null'); if(!o||!Array.isArray(o.p)) return;
-    picklist=o.p.filter(function(p){ return recOf(p); });
+    picklist=o.p.filter(function(p){ var r=recOf(p); if(r) p.key=keyOf(r); return r; });
     if(o.t) document.getElementById('c-tot').value=o.t;
     picklist.forEach(function(p){ plSyncCards(p.key,true); });
     plRenderPanel();
@@ -5431,7 +5431,8 @@ function genRecipe(mode,locked){
   return out;
 }
 
-function recOf(p){ return db.find(function(r){ return r.brand===p.brand&&r.name===p.name; }); }
+function recOf(p){ return db.find(function(r){ return keyOf(r)===p.key; })
+  ||(String(p.key).charAt(0)!=='s'?db.find(function(r){ return r.brand===p.brand&&r.name===p.name; }):undefined); }
 function slotPool(slot){ return slot==='base'?poolBase():slot==='add'?poolAdd():poolTone(); }
 /* 桥规则复检：给定一组料，前两位都张扬且无共现时必须有桥 */
 function bridgeOK(recs){
@@ -5474,7 +5475,7 @@ function rerollOne(i){
   }
   if(!pick){ toast('没有可换的料了'); return; }
   plSyncCards(p.key,false);
-  picklist[i]={key:pick.brand+'\u0000'+pick.name,brand:pick.brand,name:pick.name,
+  picklist[i]={key:keyOf(pick),brand:pick.brand,name:pick.name,
                pct:p.pct,g:p.g,slot:slot,lock:p.lock};
   plSyncCards(picklist[i].key,true);
   cRender();
@@ -5509,7 +5510,7 @@ function luckyRoll(){
   picklist.forEach(function(p){ plSyncCards(p.key,false); });
   picklist=[];
   res.forEach(function(o){
-    picklist.push({key:o.rec.brand+'\u0000'+o.rec.name,brand:o.rec.brand,name:o.rec.name,
+    picklist.push({key:keyOf(o.rec),brand:o.rec.brand,name:o.rec.name,
                    pct:o.pct,g:null,slot:o.slot,lock:!!o.lock,auto:false});
   });
   document.querySelectorAll('.card').forEach(function(c){
@@ -5599,7 +5600,7 @@ function drawToPick(){
   if(!drawSet.length) return;
   picklist.forEach(function(p){ plSyncCards(p.key,false); });
   picklist=drawSet.map(function(d){
-    return {key:d.rec.brand+'\u0000'+d.rec.name,brand:d.rec.brand,name:d.rec.name,pct:null,g:null};
+    return {key:keyOf(d.rec),brand:d.rec.brand,name:d.rec.name,pct:null,g:null};
   });
   plRedist();
   picklist.forEach(function(p){ plSyncCards(p.key,true); });
@@ -5624,7 +5625,7 @@ function drawRender(){
       +(r.sub?'<div class="dsub">'+r.sub+'</div>':'')
       +'<div class="dax">'+ax+'</div>'
       +'<button class="drr" title="只换这一条">🎲</button>';
-    el.dataset.key=r.brand+'\u0000'+r.name;
+    el.dataset.key=keyOf(r);
     if(picklist.some(function(p){ return p.key===el.dataset.key; })) el.classList.add('picked');
     el.querySelector('.drr').addEventListener('click',function(ev){ ev.stopPropagation(); drawReroll(i); });
     el.addEventListener('click',function(){          // 点卡片 = 单条进/出选单
@@ -5884,8 +5885,8 @@ function importWarnings(p){
   var br=Object.keys(badRole);
   if(br.length) w.push('未知角色：'+br.join('、'));
   var seen={}, dupSku=0;
-  (p.db||[]).forEach(function(r){ var k=(r.brand||'')+'\u0000'+(r.name||''); if(seen[k]) dupSku++; seen[k]=1; });
-  if(dupSku) w.push(dupSku+' 条品牌+口味名重复');
+  (p.db||[]).forEach(function(r){ var k=(r.brand||'')+'\u0000'+(r.name||'')+'\u0000'+(r.line||''); if(seen[k]) dupSku++; seen[k]=1; });
+  if(dupSku) w.push(dupSku+' 条品牌+口味名+系列重复');
   return w;
 }
 
