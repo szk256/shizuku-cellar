@@ -4,8 +4,9 @@ import Anthropic from '@anthropic-ai/sdk';
 import './match.js';
 
 const M = self.ShizukuMatch;
-// backend: 'bridge' = 本地中转，用你的 Claude 订阅；'api' = 直接用 API Key 按量付费
-const DEFAULTS = { nextCount: 3, nextNewTab: true, autoClose: true, backend: 'bridge', bridgeUrl: 'http://127.0.0.1:8787', bridgeToken: '', apiKey: '', model: 'claude-opus-5-5', effort: 'medium', auto: true };
+// backend: 'api' = 用你自己的 API Key 按量付费（默认，官方推荐给第三方工具的方式）；
+//          'bridge' = 本地中转，调用你本机已登录的 Claude Code，仅供个人使用（见 README「合规说明」）
+const DEFAULTS = { nextCount: 3, nextNewTab: true, autoClose: true, backend: 'api', bridgeUrl: 'http://127.0.0.1:8787', bridgeToken: '', apiKey: '', model: 'claude-opus-5-5', effort: 'medium', auto: true };
 // 每百万 token 的美元价格，用来在弹窗里显示每条大概花了多少
 const PRICE = {
   'claude-opus-5-5': [4, 20],

@@ -1,4 +1,6 @@
-"""Shizuku 本地中转：让扩展用你的 Claude 订阅（Claude Code）处理收录的页面，不用 API Key。
+"""Shizuku 本地中转：让扩展调用你本机已登录的 Claude Code 处理收录的页面。
+仅供个人在自己电脑上使用；分享或公开使用请改用扩展里的 API Key 模式。见 README「合规说明」。
+本程序原样调用官方 claude 程序，不读取、不保存、不转发任何账号凭证。
 
 运行:  双击「启动中转.bat」，或  python shizuku_bridge.py
 只监听 127.0.0.1，并且每个请求都要带口令（第一次运行时生成，存在 token.txt）。

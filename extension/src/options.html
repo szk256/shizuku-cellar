@@ -9,8 +9,8 @@
   <h1>Shizuku 收录 · 设置</h1>
 
   <label>用什么处理</label>
-  <label class="chk"><input type="radio" name="backend" value="bridge"> <b>我的 Claude 订阅</b>（本地中转，不用充值；用的是订阅额度，Pro 一次收录太多会碰到上限）</label>
-  <label class="chk"><input type="radio" name="backend" value="api"> <b>API Key</b>（按量付费，要在 console.anthropic.com 充值）</label>
+  <label class="chk"><input type="radio" name="backend" value="api"> <b>API Key</b>（推荐。按量付费，在 console.anthropic.com 充值）</label>
+  <label class="chk"><input type="radio" name="backend" value="bridge"> <b>本地中转</b>（仅供个人使用：调用你本机已登录的 Claude Code。按 Anthropic 条款，用量可能从「额外用量」扣，而不是订阅额度）</label>
 
   <div id="bridgeBox">
     <label>中转口令</label>

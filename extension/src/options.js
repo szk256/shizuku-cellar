@@ -1,9 +1,9 @@
 var F = ['bridgeToken', 'bridgeUrl', 'apiKey', 'model', 'effort', 'auto', 'nextNewTab', 'nextCount', 'autoClose'];
 var BOOL = { auto: 1, nextNewTab: 1, autoClose: 1 };
-var DEF = { nextCount: '3', nextNewTab: true, autoClose: true, backend: 'bridge', bridgeUrl: 'http://127.0.0.1:8787', bridgeToken: '', apiKey: '', model: 'claude-opus-5-5', effort: 'medium', auto: true };
+var DEF = { nextCount: '3', nextNewTab: true, autoClose: true, backend: 'api', bridgeUrl: 'http://127.0.0.1:8787', bridgeToken: '', apiKey: '', model: 'claude-opus-5-5', effort: 'medium', auto: true };
 function $(id) { return document.getElementById(id); }
 function msg(t, bad) { var m = $('msg'); m.textContent = t; m.className = bad ? 'err' : 'dim'; }
-function backend() { var r = document.querySelector('input[name=backend]:checked'); return r ? r.value : 'bridge'; }
+function backend() { var r = document.querySelector('input[name=backend]:checked'); return r ? r.value : 'api'; }
 function toggle() { var b = backend(); $('bridgeBox').style.display = b === 'bridge' ? '' : 'none'; $('apiBox').style.display = b === 'api' ? '' : 'none'; }
 
 chrome.storage.local.get('settings', function (o) {

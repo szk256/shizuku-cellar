@@ -8,8 +8,8 @@
 
 - **单文件应用**：`Cellar.html` 双击就能打开，不用服务器也不用安装。数据嵌在文件里，同时存在浏览器本地。
 - **用你自己的 Claude**：扩展可以走两条路
-  - **本地中转**（`bridge/`）：在本机调用你已经装好的 Claude Code，只监听 `127.0.0.1`，每个请求要带口令，Claude 在空的临时目录里跑，工具全部关闭。
-  - **API Key**：在扩展设置里填你自己的 Anthropic API Key。
+  - **API Key**（默认，推荐）：在扩展设置里填你自己的 Anthropic API Key，按量付费。
+  - **本地中转**（`bridge/`，仅供个人使用）：在本机调用你自己已登录的 Claude Code。只监听 `127.0.0.1`，每个请求要带口令；Claude 在空的临时目录里跑，工具全部关闭。详见下面的[合规说明](#合规说明)。
 - **改动可撤销**：Claude 的修改会自动应用，同时逐条记进日志，可以一条一条撤销；也可以按类别设成"先问我"。
 - **柜位**：网格式的多个柜子，每层可以分 2～4 段，每个烟罐都画出来。
 - **口味分类树**、按票数加权的评分排序、拼音搜中文名。
@@ -42,15 +42,35 @@ cd extension && npm install && npm run build
 
 在 `chrome://extensions` 打开「开发者模式」→「加载已解压的扩展程序」→ 选 `extension/dist`。要让扩展连上本地打开的 `Cellar.html`，还要在扩展详情里打开「允许访问文件网址」。
 
-### 本地中转（可选）
+然后在扩展设置里填你的 API Key（在 [Claude Console](https://platform.claude.com/) 创建）。
 
-需要本机装好并登录 [Claude Code](https://claude.com/claude-code)。
+### 本地中转（可选，仅供个人使用）
+
+用之前请先读[合规说明](#合规说明)。需要本机装好并**用你自己的账号**登录 [Claude Code](https://claude.com/claude-code)。
 
 ```bash
 python bridge/shizuku_bridge.py
 ```
 
-第一次运行会生成 `bridge/token.txt`，把里面的口令填进扩展设置。找不到 `claude` 的话，用环境变量 `SHIZUKU_CLAUDE` 指定 `claude.exe` 的路径。
+第一次运行会生成 `bridge/token.txt`，把里面的口令填进扩展设置，并把「用什么处理」改成「本地中转」。找不到 `claude` 的话，用环境变量 `SHIZUKU_CLAUDE` 指定 `claude.exe` 的路径。
+
+## 合规说明
+
+本项目和 Anthropic 没有任何关联，也没有得到 Anthropic 的认可。Claude 是 Anthropic 的商标。
+
+- **API Key 模式**是 Anthropic 给第三方工具推荐的方式：用量按你自己的 Key 计费。
+- **本地中转**是为作者个人在自己电脑上使用而写的。它的工作方式是：
+  - 原样调用官方的 `claude` 程序，不修改它，也不绕过它；
+  - 登录走 Anthropic 自己的流程（`--login` 只是打开 `claude`）；
+  - **不读取、不保存、不转发**任何 Claude 账号的凭证或 OAuth token；
+  - 只在本机运行，不对外提供服务；一次只处理一个请求。
+- 但请注意：
+  - Anthropic 规定，订阅（Free / Pro / Max）的登录方式**只用于 Claude Code 和 Anthropic 自家应用的正常个人使用**；第三方开发者不得代用户走订阅凭证。
+  - 自 2026 年 4 月起，第三方工具产生的用量会从「额外用量」里扣，不算在订阅额度内。
+  - 本项目这种"调用本机官方 CLI"的方式是否算第三方工具，官方没有明确说法。**请自行阅读条款并自行判断，后果自负。**不确定就用 API Key。
+- 参考：[Claude Code 法律与合规](https://code.claude.com/docs/en/legal-and-compliance) · [Anthropic 使用政策](https://www.anthropic.com/legal/aup) · [消费者条款](https://www.anthropic.com/legal/consumer-terms)
+
+请不要把本地中转部署成给别人用的服务，也不要把它改成能读取或分享账号凭证的样子。
 
 ## 关于 HTReviews
 
@@ -59,7 +79,7 @@ python bridge/shizuku_bridge.py
 ## 注意
 
 - 这是个人项目，按原样提供，不保证维护。
-- 用中转或 API 产生的 Claude 用量算在你自己的账户上，请自行确认符合 Anthropic 的使用条款。
+- 用 API 或中转产生的 Claude 用量都算在你自己的账户上。
 
 ## License
 

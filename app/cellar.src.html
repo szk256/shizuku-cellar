@@ -1196,7 +1196,7 @@ html.no-ov .jar.ov{background-image:none;}
     <textarea id="ask-q" rows="3" placeholder="比如：观望清单里哪些值得买？ / 把所有雪茄叶放到 C 柜第 2 层 / 我的库存里缺什么风味？" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter')askSend()"></textarea>
     <button class="htr-b ac" id="ask-go" onclick="askSend()">发送</button>
   </div>
-  <div class="ask-foot">用你的 Claude 订阅（经本地中转），看得到整个库存、风味轴、柜子、观望清单。它改的会直接生效，每次都能撤销。</div>
+  <div class="ask-foot">经扩展交给 Claude（API Key 或本地中转，扩展设置里选），看得到整个库存、风味轴、柜子、观望清单。它改的会直接生效，每次都能撤销。</div>
 </div>
 <div id="cl-pop" onclick="event.stopPropagation()"></div>
 <div id="bk-menu" onclick="event.stopPropagation()">
@@ -7298,7 +7298,7 @@ function htrCandHtml(){
 }
 
 /* ══════════ 问 Claude ══════════
-   问题 + 库存摘要 → 扩展 → 本地中转 → Claude Code（你的订阅）。回答显示在侧栏里；
+   问题 + 库存摘要 → 扩展 → Claude（API Key，或本地中转 → Claude Code）。回答显示在侧栏里；
    它给出的修改（ops）直接走 chgApply 生效，记在「Claude 的改动」里，可撤销。 */
 var askBusy=0, askWait={}, _aid=0, askHist=[];
 try{ askHist=(JSON.parse(localStorage.getItem('shizuku_ask')||'[]')||[]).filter(function(x){ return !x.pending; }); }catch(e){ askHist=[]; }
@@ -7625,7 +7625,7 @@ function renderClaude(){
   var el=document.getElementById('ck-side'); if(!el) return;
   var E=celEsc, h='';
   function sec(t,body,note){ return '<div class="st-sec"><div class="st-h">'+t+'</div>'+body+(note?'<div class="st-note">'+note+'</div>':'')+'</div>'; }
-  h+=sec('Claude 现在','<div id="ck-status">'+clStatusHtml()+'</div>','每次只做一件（省订阅额度），其余排队。');
+  h+=sec('Claude 现在','<div id="ck-status">'+clStatusHtml()+'</div>','每次只做一件（省额度），其余排队。');
   var pa=askHist.filter(function(x){ return x.pend; }).length;
   if(htrPatches.length||pa) h+=sec('等你看的修改',(pa?'<div class="htr-dim" style="margin-bottom:6px">对话里有 '+pa+' 处提议等你点「应用」</div>':'')+htrPatchHtml());
   var lg=htr.log||[], show=ckLogAll?lg:lg.slice(0,10);
@@ -7720,7 +7720,7 @@ function clDraw(){
 }
 function clPopDraw(){
   var box=document.getElementById('cl-pop');
-  box.innerHTML=clStatusHtml()+'<div class="htr-row" style="margin-top:8px"><button class="htr-b ac" onclick="clPop();gotoPage(\'claude\')">打开 Claude 页</button><span class="htr-dim">每次只做一件（省订阅额度），其余排队。</span></div>';
+  box.innerHTML=clStatusHtml()+'<div class="htr-row" style="margin-top:8px"><button class="htr-b ac" onclick="clPop();gotoPage(\'claude\')">打开 Claude 页</button><span class="htr-dim">每次只做一件（省额度），其余排队。</span></div>';
 }
 function clStatusHtml(){
   var E=celEsc, st=clSt, now=Date.now(), h='';
